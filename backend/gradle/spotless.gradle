@@ -1,0 +1,11 @@
+spotless {
+    java {
+        // Opinionated, deterministic formatting
+        googleJavaFormat('1.29.0')
+
+        // Handy hygiene
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}

@@ -2,6 +2,10 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.1.0-M2'
 	id 'io.spring.dependency-management' version '1.1.7'
+	// Quality / coverage / analysis
+	id 'com.diffplug.spotless' version '6.25.0'
+	id 'jacoco'
+	id 'org.sonarqube' version '7.2.2.6593'
 }
 
 group = 'com.haiilo'
@@ -26,12 +30,30 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2"
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+//Integration tests
+apply from: 'gradle/integration-test.gradle'
+
+//spotless instead of checkstyle
+apply from: 'gradle/spotless.gradle'
+
+//sonar to bring everything together
+apply from: 'gradle/sonar.gradle'
+
+tasks.named('check') {
+	dependsOn 'spotlessCheck'
+	dependsOn 'integrationTest'
 }
