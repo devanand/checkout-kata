@@ -9,6 +9,15 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Simple in-memory implementation of {@link Catalog}.
+ *
+ * This implementation is sufficient for the kata and keeps the
+ * product catalog entirely in memory.
+ *
+ * In a real system this would likely be backed by a database or
+ * external product service.
+ */
 @Component
 public class InMemoryCatalog implements Catalog {
     private final Map<ProductId, Product> products = Map.of(

@@ -7,8 +7,8 @@ import java.util.Objects;
 /**
  * Simple money value object for EUR amounts.
  *
- * <p>Invariant: values are stored with scale=2 and {@code RoundingMode.HALF_UP}.
- * Avoids floating point errors by using {@link java.math.BigDecimal}.</p>
+ * Invariant: values are stored with scale=2 and {@code RoundingMode.HALF_UP}.
+ * Avoids floating point errors by using {@link java.math.BigDecimal}.
  */
 public final class Money {
     private static final int SCALE = 2;
