@@ -1,0 +1,17 @@
+[
+  {
+    "type": "MULTI_BUY",
+    "productId": "APPLE",
+    "validFrom": "2026-03-01",
+    "validUntil": "2026-03-31",
+    "requiredQuantity": 2,
+    "bundlePrice": "0.45"
+  },
+  {
+    "type": "PERCENT_DISCOUNT",
+    "productId": "BANANA",
+    "validFrom": "2026-03-01",
+    "validUntil": "2026-03-31",
+    "percentage": 10
+  }
+]

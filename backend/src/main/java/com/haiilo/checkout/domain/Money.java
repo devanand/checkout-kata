@@ -54,6 +54,14 @@ public final class Money {
         return new Money(this.amount.add(other.amount), currency);
     }
 
+    public Money minus(Money other) {
+        Objects.requireNonNull(other, "other must not be null");
+        validateCurrency(other);
+
+        BigDecimal result = this.amount.subtract(other.amount);
+        return new Money(result, this.currency);
+    }
+
     public Money times(int multiplier) {
         if (multiplier < 0) {
             throw new IllegalArgumentException("multiplier must be >= 0");
@@ -72,6 +80,25 @@ public final class Money {
     public boolean isGreaterThan(Money other) {
         Objects.requireNonNull(other);
         return amount.compareTo(other.amount) > 0;
+    }
+
+    public Money percentage(int percentage) {
+        if (percentage < 0 || percentage > 100) {
+            throw new IllegalArgumentException("percentage must be between 0 and 100");
+        }
+
+        BigDecimal factor = BigDecimal.valueOf(percentage)
+                .divide(BigDecimal.valueOf(100), SCALE + 2, ROUNDING);
+
+        return new Money(this.amount.multiply(factor), this.currency);
+    }
+
+    public Money applyPercentageDiscount(int percentage) {
+        if (percentage < 0 || percentage > 100) {
+            throw new IllegalArgumentException("percentage must be between 0 and 100");
+        }
+
+        return this.minus(this.percentage(percentage));
     }
 
     private void validateCurrency(Money other) {

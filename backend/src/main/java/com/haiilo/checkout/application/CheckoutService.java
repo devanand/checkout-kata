@@ -6,6 +6,7 @@ import com.haiilo.checkout.domain.CartItem;
 import com.haiilo.checkout.domain.Money;
 import com.haiilo.checkout.domain.Product;
 import com.haiilo.checkout.exception.UnknownProductException;
+import com.haiilo.checkout.pricing.PricingService;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -13,9 +14,11 @@ import java.util.Objects;
 @Service
 public class CheckoutService {
     private final Catalog catalog;
+    private final PricingService pricingService;
 
-    public CheckoutService(Catalog catalog) {
+    public CheckoutService(Catalog catalog, PricingService pricingService) {
         this.catalog = catalog;
+        this.pricingService = pricingService;
     }
 
     public Money checkout(Cart cart) {
@@ -26,8 +29,7 @@ public class CheckoutService {
         for (CartItem item: cart.items()) {
             Product product = catalog.findById(item.productId())
                     .orElseThrow(() -> new UnknownProductException(item.productId().value()));
-            Money lineTotal = product.unitPrice().times(item.quantity());
-            total = total.plus(lineTotal);
+            total = total.plus(pricingService.price(item, product));
         }
         return total;
     }
