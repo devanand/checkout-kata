@@ -1,7 +1,10 @@
 package com.haiilo.checkout.domain;
 
+import lombok.Getter;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Currency;
 import java.util.Objects;
 
 /**
@@ -13,9 +16,12 @@ import java.util.Objects;
 public final class Money {
     private static final int SCALE = 2;
     private static final RoundingMode ROUNDING = RoundingMode.HALF_UP;
+    @Getter
     private final BigDecimal amount;
+    @Getter
+    private final Currency currency;
 
-    public Money(BigDecimal amount) {
+    public Money(BigDecimal amount, Currency currency) {
         Objects.requireNonNull(amount, "amount must not be null");
 
         BigDecimal normalized = amount.setScale(SCALE, ROUNDING);
@@ -25,35 +31,34 @@ public final class Money {
         }
 
         this.amount = normalized;
+        this.currency = currency;
     }
+
 
     public static Money eur(String amount) {
         Objects.requireNonNull(amount, "amount must not be null");
-        return new Money(new BigDecimal(amount));
+        return new Money(new BigDecimal(amount), Currency.getInstance("EUR"));
     }
 
     public static Money eur(BigDecimal amount) {
-        return new Money(amount);
+        return new Money(amount, Currency.getInstance("EUR"));
     }
 
     public static Money zero() {
-        return new Money(BigDecimal.ZERO);
+        return new Money(BigDecimal.ZERO, Currency.getInstance("EUR"));
     }
 
     public Money plus(Money other) {
         Objects.requireNonNull(other, "other must not be null");
-        return new Money(this.amount.add(other.amount));
+        validateCurrency(other);
+        return new Money(this.amount.add(other.amount), currency);
     }
 
     public Money times(int multiplier) {
         if (multiplier < 0) {
             throw new IllegalArgumentException("multiplier must be >= 0");
         }
-        return new Money(this.amount.multiply(BigDecimal.valueOf(multiplier)));
-    }
-
-    public BigDecimal asBigDecimal() {
-        return amount;
+        return new Money(this.amount.multiply(BigDecimal.valueOf(multiplier)), currency);
     }
 
     public boolean isZero() {
@@ -67,6 +72,12 @@ public final class Money {
     public boolean isGreaterThan(Money other) {
         Objects.requireNonNull(other);
         return amount.compareTo(other.amount) > 0;
+    }
+
+    private void validateCurrency(Money other) {
+        if (!this.currency.equals(other.currency)) {
+            throw new IllegalArgumentException("Money operations require matching currencies");
+        }
     }
 
     @Override

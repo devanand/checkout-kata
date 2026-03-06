@@ -5,6 +5,7 @@ import com.haiilo.checkout.api.dto.CheckoutRequest;
 import com.haiilo.checkout.api.dto.CheckoutResponse;
 import com.haiilo.checkout.application.CheckoutService;
 import com.haiilo.checkout.domain.Cart;
+import com.haiilo.checkout.domain.Money;
 import com.haiilo.checkout.domain.ProductId;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +26,8 @@ public class CheckoutController {
     @PostMapping
     public CheckoutResponse checkout(@Valid @RequestBody CheckoutRequest request) {
         Cart cart = toCart(request);
-        var total = checkoutService.checkout(cart);
-        return new CheckoutResponse(total.toString(), "EUR");
+        Money total = checkoutService.checkout(cart);
+        return new CheckoutResponse(total.getAmount().toPlainString(), total.getCurrency().getCurrencyCode());
     }
 
     private Cart toCart(CheckoutRequest request) {
