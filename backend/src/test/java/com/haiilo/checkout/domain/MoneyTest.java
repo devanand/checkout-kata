@@ -52,7 +52,6 @@ public class MoneyTest {
     @Test
     void roundsHalfUpToTwoDecimalPlaces() {
         Money money = Money.eur("0.105");
-
         assertEquals(Money.eur("0.11"), money);
     }
 

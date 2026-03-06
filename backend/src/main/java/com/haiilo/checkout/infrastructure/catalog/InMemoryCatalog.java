@@ -21,9 +21,9 @@ import java.util.Optional;
 @Component
 public class InMemoryCatalog implements Catalog {
     private final Map<ProductId, Product> products = Map.of(
-            ProductId.of("APPLE"), new Product(ProductId.of("APPLE"), Money.eur("0.30")),
-            ProductId.of("BANANA"), new Product(ProductId.of("BANANA"), Money.eur("0.20")),
-            ProductId.of("ORANGE"), new Product(ProductId.of("ORANGE"), Money.eur("0.50"))
+        ProductId.of("APPLE"), new Product(ProductId.of("APPLE"), Money.eur("0.30")),
+        ProductId.of("BANANA"), new Product(ProductId.of("BANANA"), Money.eur("0.20")),
+        ProductId.of("ORANGE"), new Product(ProductId.of("ORANGE"), Money.eur("0.50"))
     );
 
     @Override
