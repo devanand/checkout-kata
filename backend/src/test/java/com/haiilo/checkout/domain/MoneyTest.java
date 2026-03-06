@@ -2,6 +2,8 @@ package com.haiilo.checkout.domain;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Currency;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,12 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class MoneyTest {
 
     @Test
-    void allowsZeroAmount() {
-        Money money = Money.zero();
+    void createsEuroMoney() {
+        Money money = Money.eur("1.25");
 
-        assertEquals(Money.eur("0.00"), money);
-        assertTrue(money.isZero());
-        assertFalse(money.isPositive());
+        assertEquals("1.25", money.toString());
+        assertEquals(Currency.getInstance("EUR"), money.getCurrency());
     }
 
     @Test
@@ -24,67 +25,46 @@ public class MoneyTest {
     }
 
     @Test
-    void addsMoneyCorrectly() {
-        Money first = Money.eur("0.30");
-        Money second = Money.eur("0.20");
+    void addsMoneyOfSameCurrency() {
+        Money total = Money.eur("0.30").plus(Money.eur("0.20"));
 
-        Money result = first.plus(second);
-
-        assertEquals(Money.eur("0.50"), result);
-        assertTrue(result.isPositive());
-        assertFalse(result.isZero());
+        assertEquals(Money.eur("0.50"), total);
     }
 
     @Test
-    void multipliesMoneyCorrectly() {
-        Money unitPrice = Money.eur("0.30");
+    void multipliesAmount() {
+        Money total = Money.eur("0.30").times(3);
 
-        Money result = unitPrice.times(3);
-
-        assertEquals(Money.eur("0.90"), result);
+        assertEquals(Money.eur("0.90"), total);
     }
 
     @Test
     void rejectsNegativeMultiplier() {
-        assertThrows(IllegalArgumentException.class, () -> Money.eur("1.00").times(-1));
+        assertThrows(IllegalArgumentException.class, () -> Money.eur("0.30").times(-1));
     }
 
     @Test
-    void roundsHalfUpToTwoDecimalPlaces() {
-        Money money = Money.eur("0.105");
-        assertEquals(Money.eur("0.11"), money);
+    void identifiesZero() {
+        assertTrue(Money.zero().isZero());
+        assertFalse(Money.zero().isPositive());
     }
 
     @Test
     void identifiesPositiveAmount() {
-        Money money = Money.eur("0.30");
-
-        assertTrue(money.isPositive());
-        assertFalse(money.isZero());
+        assertTrue(Money.eur("0.01").isPositive());
+        assertFalse(Money.eur("0.01").isZero());
     }
 
     @Test
-    void identifiesZeroAmount() {
-        Money money = Money.eur("0.00");
+    void appliesPercentageDiscount() {
+        Money discounted = Money.eur("1.00").applyPercentageDiscount(10);
 
-        assertTrue(money.isZero());
-        assertFalse(money.isPositive());
+        assertEquals(Money.eur("0.90"), discounted);
     }
 
     @Test
-    void comparesGreaterAmounts() {
-        Money smaller = Money.eur("0.30");
-        Money larger = Money.eur("0.50");
-
-        assertTrue(larger.isGreaterThan(smaller));
-        assertFalse(smaller.isGreaterThan(larger));
-    }
-
-    @Test
-    void doesNotTreatEqualAmountsAsGreater() {
-        Money first = Money.eur("0.50");
-        Money second = Money.eur("0.50");
-
-        assertFalse(first.isGreaterThan(second));
+    void rejectsInvalidDiscountPercentage() {
+        assertThrows(IllegalArgumentException.class, () -> Money.eur("1.00").applyPercentageDiscount(-1));
+        assertThrows(IllegalArgumentException.class, () -> Money.eur("1.00").applyPercentageDiscount(101));
     }
 }

@@ -3,12 +3,14 @@ package com.haiilo.checkout.infrastructure.offer;
 import com.haiilo.checkout.application.OfferCatalog;
 import com.haiilo.checkout.domain.ProductId;
 import com.haiilo.checkout.pricing.Offer;
+import org.springframework.stereotype.Component;
 
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class InMemoryOfferCatalog implements OfferCatalog {
     private final List<Offer> offers;
 

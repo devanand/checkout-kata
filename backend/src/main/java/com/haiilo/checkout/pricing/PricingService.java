@@ -4,22 +4,20 @@ import com.haiilo.checkout.application.OfferCatalog;
 import com.haiilo.checkout.domain.CartItem;
 import com.haiilo.checkout.domain.Money;
 import com.haiilo.checkout.domain.Product;
+import org.springframework.stereotype.Service;
 
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Service
 public class PricingService {
     private final OfferCatalog offerCatalog;
     private final Clock clock;
 
     public PricingService(OfferCatalog offerCatalog) {
-        this(offerCatalog, Clock.systemDefaultZone());
-    }
-
-    PricingService(OfferCatalog offerCatalog, Clock clock) {
         this.offerCatalog = Objects.requireNonNull(offerCatalog, "offerCatalog must not be null");
-        this.clock = Objects.requireNonNull(clock, "clock must not be null");
+        this.clock = Clock.systemDefaultZone();
     }
 
     public Money price(CartItem item, Product product) {

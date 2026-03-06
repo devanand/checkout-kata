@@ -1,12 +1,12 @@
 package com.haiilo.checkout.infrastructure.offer;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.haiilo.checkout.infrastructure.offer.factory.OfferFactoryRegistry;
 import com.haiilo.checkout.pricing.Offer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
 import java.util.List;

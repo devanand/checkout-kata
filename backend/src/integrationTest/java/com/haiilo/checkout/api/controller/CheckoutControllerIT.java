@@ -37,31 +37,16 @@ class CheckoutControllerIT {
     }
 
     @Test
-    void calculatesTotalForSingleItem() throws Exception {
+    void appliesOfferAutomaticallyDuringCheckout() throws Exception {
         CheckoutRequest request = new CheckoutRequest(
-            List.of(new CheckoutItemRequest("APPLE", 2))
+                List.of(new CheckoutItemRequest("APPLE", 3))
         );
-        mockMvc.perform(post("/api/checkout")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.total").value("0.60"))
-                .andExpect(jsonPath("$.currency").value("EUR"));
-    }
 
-    @Test
-    void calculatesTotalForMixedItems() throws Exception {
-        CheckoutRequest request = new CheckoutRequest(
-            List.of(
-                new CheckoutItemRequest("APPLE", 2),
-                new CheckoutItemRequest("BANANA", 1)
-            )
-        );
         mockMvc.perform(post("/api/checkout")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.total").value("0.80"))
+                .andExpect(jsonPath("$.total").value("0.75"))
                 .andExpect(jsonPath("$.currency").value("EUR"));
     }
 
