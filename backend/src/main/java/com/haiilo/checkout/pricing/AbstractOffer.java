@@ -1,10 +1,8 @@
 package com.haiilo.checkout.pricing;
 
-import com.haiilo.checkout.domain.Money;
 import com.haiilo.checkout.domain.ProductId;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 public abstract class AbstractOffer implements Offer {
     private final ProductId productId;

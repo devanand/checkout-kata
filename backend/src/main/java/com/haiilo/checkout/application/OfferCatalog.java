@@ -4,7 +4,6 @@ import com.haiilo.checkout.domain.ProductId;
 import com.haiilo.checkout.pricing.Offer;
 
 import java.time.LocalDate;
-import java.util.Locale;
 import java.util.Optional;
 
 public interface OfferCatalog {

@@ -3,7 +3,6 @@ package com.haiilo.checkout.pricing;
 import com.haiilo.checkout.domain.Money;
 import com.haiilo.checkout.domain.ProductId;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 public final class PercentDiscountOffer extends AbstractOffer {
