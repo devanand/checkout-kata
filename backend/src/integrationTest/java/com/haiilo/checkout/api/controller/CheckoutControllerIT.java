@@ -28,7 +28,7 @@ class CheckoutControllerIT {
     @Test
     void returnsZeroForEmptyCart() throws Exception {
         CheckoutRequest request = new CheckoutRequest(List.of());
-        mockMvc.perform(post("/api/checkout")
+        mockMvc.perform(post("/api/v1/checkout")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -42,7 +42,7 @@ class CheckoutControllerIT {
                 List.of(new CheckoutItemRequest("APPLE", 3))
         );
 
-        mockMvc.perform(post("/api/checkout")
+        mockMvc.perform(post("/api/v1/checkout")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -56,7 +56,7 @@ class CheckoutControllerIT {
             List.of(new CheckoutItemRequest("MANGO", 1))
         );
 
-        mockMvc.perform(post("/api/checkout")
+        mockMvc.perform(post("/api/v1/checkout")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
