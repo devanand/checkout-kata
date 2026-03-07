@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class OfferLoader {
     private List<OfferConfig> readConfiguredOffers() {
         try (InputStream inputStream = offersResource.getInputStream()) {
             return objectMapper.readValue(inputStream, offerConfigListType());
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             throw new IllegalStateException("Failed to load offers from offers.json", ex);
         }
     }

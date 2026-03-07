@@ -14,7 +14,6 @@ public class MoneyTest {
     @Test
     void createsEuroMoney() {
         Money money = Money.eur("1.25");
-
         assertEquals("1.25", money.toString());
         assertEquals(Currency.getInstance("EUR"), money.getCurrency());
     }
@@ -25,10 +24,23 @@ public class MoneyTest {
     }
 
     @Test
-    void addsMoneyOfSameCurrency() {
+    void addsMoneyCorrectly() {
         Money total = Money.eur("0.30").plus(Money.eur("0.20"));
 
         assertEquals(Money.eur("0.50"), total);
+    }
+
+    @Test
+    void subtractsMoneyCorrectly() {
+        Money result = Money.eur("1.00").minus(Money.eur("0.25"));
+
+        assertEquals(Money.eur("0.75"), result);
+    }
+
+    @Test
+    void rejectsSubtractionThatWouldMakeMoneyNegative() {
+        assertThrows(IllegalArgumentException.class,
+                () -> Money.eur("0.20").minus(Money.eur("0.30")));
     }
 
     @Test
@@ -44,19 +56,70 @@ public class MoneyTest {
     }
 
     @Test
-    void identifiesZero() {
-        assertTrue(Money.zero().isZero());
-        assertFalse(Money.zero().isPositive());
+    void identifiesZeroAmount() {
+        Money money = Money.zero();
+
+        assertTrue(money.isZero());
+        assertFalse(money.isPositive());
     }
 
     @Test
     void identifiesPositiveAmount() {
-        assertTrue(Money.eur("0.01").isPositive());
-        assertFalse(Money.eur("0.01").isZero());
+        Money money = Money.eur("0.01");
+
+        assertTrue(money.isPositive());
+        assertFalse(money.isZero());
     }
 
     @Test
-    void appliesPercentageDiscount() {
+    void calculatesZeroPercentage() {
+        Money percentage = Money.eur("1.00").percentage(0);
+
+        assertEquals(Money.zero(), percentage);
+    }
+
+    @Test
+    void calculatesFullPercentage() {
+        Money percentage = Money.eur("1.00").percentage(100);
+
+        assertEquals(Money.eur("1.00"), percentage);
+    }
+
+    @Test
+    void calculatesPercentageCorrectly() {
+        Money percentage = Money.eur("2.00").percentage(25);
+
+        assertEquals(Money.eur("0.50"), percentage);
+    }
+
+    @Test
+    void rejectsNegativePercentage() {
+        assertThrows(IllegalArgumentException.class,
+                () -> Money.eur("1.00").percentage(-1));
+    }
+
+    @Test
+    void rejectsPercentageAboveHundred() {
+        assertThrows(IllegalArgumentException.class,
+                () -> Money.eur("1.00").percentage(101));
+    }
+
+    @Test
+    void appliesZeroPercentDiscount() {
+        Money discounted = Money.eur("1.00").applyPercentageDiscount(0);
+
+        assertEquals(Money.eur("1.00"), discounted);
+    }
+
+    @Test
+    void appliesHundredPercentDiscount() {
+        Money discounted = Money.eur("1.00").applyPercentageDiscount(100);
+
+        assertEquals(Money.zero(), discounted);
+    }
+
+    @Test
+    void appliesPercentageDiscountCorrectly() {
         Money discounted = Money.eur("1.00").applyPercentageDiscount(10);
 
         assertEquals(Money.eur("0.90"), discounted);
@@ -64,7 +127,9 @@ public class MoneyTest {
 
     @Test
     void rejectsInvalidDiscountPercentage() {
-        assertThrows(IllegalArgumentException.class, () -> Money.eur("1.00").applyPercentageDiscount(-1));
-        assertThrows(IllegalArgumentException.class, () -> Money.eur("1.00").applyPercentageDiscount(101));
+        assertThrows(IllegalArgumentException.class,
+                () -> Money.eur("1.00").applyPercentageDiscount(-1));
+        assertThrows(IllegalArgumentException.class,
+                () -> Money.eur("1.00").applyPercentageDiscount(101));
     }
 }
