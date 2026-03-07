@@ -52,7 +52,7 @@ A low-level design diagram illustrating these components will be included below.
 
 ## Low Level Design
 
-![Architecture Diagram](docs/checkout-architecture.pdf)
+[Architecture Diagram](docs/checkout-architecture.pdf)
 
 ## Project Structure
 
