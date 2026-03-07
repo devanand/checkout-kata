@@ -48,12 +48,6 @@ Infrastructure components provide implementations for catalogs, offer loading, a
 
 The REST controller exposes the checkout functionality via HTTP and returns the computed total.
 
-A low-level design diagram illustrating these components will be included below.
-
-## Low Level Design
-
-[Architecture Diagram](docs/checkout-architecture.pdf)
-
 ## Project Structure
 
 The project is organized into clear packages that separate domain logic, pricing rules, application services, infrastructure, and the API layer.
@@ -244,6 +238,7 @@ The HTML report will be available at:
 
 build/reports/jacoco/test/html/index.html
 
+![Coverage](https://img.shields.io/badge/coverage-86%25-brightgreen)
 ## Design Decisions
 
 ### Stateless Checkout
