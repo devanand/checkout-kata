@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -29,17 +30,21 @@ public class OfferLoader {
     }
 
     public List<Offer> loadOffers() {
+        return readConfiguredOffers().stream()
+                .map(offerFactoryRegistry::create)
+                .toList();
+    }
+
+    private List<OfferConfig> readConfiguredOffers() {
         try (InputStream inputStream = offersResource.getInputStream()) {
-            JavaType listType = objectMapper.getTypeFactory()
-                    .constructCollectionType(List.class, OfferConfig.class);
-
-            List<OfferConfig> configs = objectMapper.readValue(inputStream, listType);
-
-            return configs.stream()
-                    .map(offerFactoryRegistry::create)
-                    .toList();
-        } catch (Exception ex) {
+            return objectMapper.readValue(inputStream, offerConfigListType());
+        } catch (IOException ex) {
             throw new IllegalStateException("Failed to load offers from offers.json", ex);
         }
+    }
+
+    private JavaType offerConfigListType() {
+        return objectMapper.getTypeFactory()
+                .constructCollectionType(List.class, OfferConfig.class);
     }
 }
