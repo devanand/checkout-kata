@@ -11,6 +11,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+/**
+ * Application service responsible for orchestrating the checkout process.
+ *
+ * Retrieves product information from the catalog and delegates
+ * price calculation to the pricing service.
+ */
 @Service
 public class CheckoutService {
     private final Catalog catalog;

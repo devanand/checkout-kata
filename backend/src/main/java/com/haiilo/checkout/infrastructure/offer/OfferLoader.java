@@ -12,6 +12,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * Loads offer configurations from a JSON resource and converts
+ * them into Offer domain objects.
+ *
+ * Offers are read during application startup and later stored
+ * in memory for fast lookup during checkout.
+ */
 @Component
 public class OfferLoader {
 

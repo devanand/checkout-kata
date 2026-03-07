@@ -10,6 +10,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * In-memory store of offers loaded at application startup.
+ *
+ * Provides lookup functionality to retrieve the currently
+ * active offer for a product.
+ */
 @Component
 public class InMemoryOfferCatalog implements OfferCatalog {
     private final List<Offer> offers;

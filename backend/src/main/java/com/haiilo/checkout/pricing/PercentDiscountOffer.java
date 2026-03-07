@@ -5,6 +5,10 @@ import com.haiilo.checkout.domain.ProductId;
 
 import java.util.Objects;
 
+/**
+ * Offer that applies a percentage discount to the total price
+ * of a product based on quantity purchased.
+ */
 public final class PercentDiscountOffer extends AbstractOffer {
 
     private final int percentage;

@@ -5,13 +5,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-
 /**
- * Represents a customer's shopping cart.
+ * Represents a shopping cart containing items selected for checkout.
  *
- * The cart stores grouped {@link CartItem}s rather than individual
- * product entries. Quantities are aggregated when the same product is
- * added multiple times.
+ * The cart aggregates quantities for the same product and provides
+ * operations for adding items and retrieving cart contents.
  */
 public final class Cart {
     private final List<CartItem> items;

@@ -10,6 +10,12 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * Service responsible for calculating the price of cart items.
+ *
+ * Applies active offers when available and falls back to
+ * regular pricing otherwise.
+ */
 @Service
 public class PricingService {
     private final OfferCatalog offerCatalog;

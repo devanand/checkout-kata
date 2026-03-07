@@ -8,10 +8,11 @@ import java.util.Currency;
 import java.util.Objects;
 
 /**
- * Simple money value object for EUR amounts.
+ * Immutable value object representing a monetary amount.
  *
- * Invariant: values are stored with scale=2 and {@code RoundingMode.HALF_UP}.
- * Avoids floating point errors by using {@link java.math.BigDecimal}.
+ * Ensures that monetary values are non-negative and always associated
+ * with a currency. Provides basic arithmetic operations such as addition,
+ * multiplication, and percentage-based discount application.
  */
 public final class Money {
     private static final int SCALE = 2;

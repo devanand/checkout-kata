@@ -5,6 +5,13 @@ import com.haiilo.checkout.domain.ProductId;
 
 import java.util.Objects;
 
+/**
+ * Offer that applies a bundled price when a required quantity
+ * of a product is purchased.
+ *
+ * Example:
+ * 2 apples for 0.45 instead of paying individual unit prices.
+ */
 public class MultiBuyOffer extends AbstractOffer {
     private final int requiredQuantity;
     private final Money bundlePrice;

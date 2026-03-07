@@ -19,6 +19,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST controller exposing checkout operations.
+ *
+ * Accepts cart requests, delegates processing to the checkout
+ * service, and returns the calculated total price.
+ */
+
 @Tag(
         name = "Checkout API",
         description = "Operations related to supermarket checkout pricing"

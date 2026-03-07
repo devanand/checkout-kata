@@ -7,6 +7,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Registry of OfferFactory implementations.
+ *
+ * Delegates creation of offer instances to the factory
+ * capable of handling the specified offer type.
+ */
 @Component
 public class OfferFactoryRegistry {
     private final List<OfferFactory> factories;

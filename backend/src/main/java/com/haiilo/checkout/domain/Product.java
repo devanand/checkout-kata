@@ -3,14 +3,10 @@ package com.haiilo.checkout.domain;
 import java.util.Objects;
 
 /**
- * Represents a purchasable product in the catalog.
+ * Domain model representing a product available in the catalog.
  *
- * A product is uniquely identified by its {@link ProductId} and has
- * a fixed unit price.
- *
- * Invariant:
- *   ProductId must not be null
- *   Unit price must be strictly greater than zero
+ * Each product has a unique identifier and a unit price.
+ * The price must always be strictly positive.
  */
 public record Product(ProductId productId, Money unitPrice) {
     public Product {

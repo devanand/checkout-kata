@@ -4,11 +4,9 @@ import java.util.Objects;
 
 
 /**
- * Represents a product and its quantity inside a shopping cart.
+ * Represents a specific product and its quantity within a cart.
  *
- * Invariant:
- *   ProductId must not be null
- *   Quantity must be greater than zero
+ * Cart items are immutable and quantities must always be positive.
  */
 public record CartItem(ProductId productId, int quantity) {
     public CartItem {

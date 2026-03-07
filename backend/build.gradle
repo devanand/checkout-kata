@@ -53,6 +53,9 @@ apply from: 'gradle/spotless.gradle'
 //sonar to bring everything together
 apply from: 'gradle/sonar.gradle'
 
+//Jacoco for test reports
+apply from: 'gradle/jacoco.gradle'
+
 tasks.named('check') {
 	dependsOn 'spotlessCheck'
 	dependsOn 'integrationTest'

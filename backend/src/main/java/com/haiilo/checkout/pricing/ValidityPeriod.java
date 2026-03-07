@@ -3,6 +3,12 @@ package com.haiilo.checkout.pricing;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * Value object representing the time window during which an offer is valid.
+ *
+ * Provides logic to determine whether a given date falls within
+ * the configured validity range.
+ */
 public final class ValidityPeriod {
 
     private final LocalDate validFrom;

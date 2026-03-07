@@ -10,13 +10,10 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Simple in-memory implementation of {@link Catalog}.
+ * In-memory implementation of the product catalog.
  *
- * This implementation is sufficient for the kata and keeps the
- * product catalog entirely in memory.
- *
- * In a real system this would likely be backed by a database or
- * external product service.
+ * Stores a predefined set of products and provides lookup
+ * functionality by product identifier.
  */
 @Component
 public class InMemoryCatalog implements Catalog {

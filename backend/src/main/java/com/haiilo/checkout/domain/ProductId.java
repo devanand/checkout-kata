@@ -3,15 +3,10 @@ package com.haiilo.checkout.domain;
 import java.util.Objects;
 
 /**
- * Strongly typed identifier for a product.
+ * Value object representing the identifier of a product.
  *
- * This value object avoids using raw strings for product identifiers,
- * improving type safety and preventing accidental mix-ups with other IDs
- *
- * Invariant:
- *   Value must not be null
- *   Value must not be blank
- *   Value is normalized to uppercase
+ * Product identifiers are normalized to uppercase and trimmed
+ * to avoid inconsistencies during lookup operations.
  */
 public record ProductId(String value) {
     public ProductId {

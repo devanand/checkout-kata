@@ -1,0 +1,42 @@
+jacoco {
+    toolVersion = "0.8.14"
+}
+
+tasks.named('test') {
+    finalizedBy 'jacocoTestReport'
+}
+
+tasks.named('integrationTest') {
+    finalizedBy 'jacocoTestReport'
+}
+
+jacocoTestReport {
+
+    dependsOn test
+    dependsOn integrationTest
+
+    executionData.setFrom(fileTree(buildDir).include(
+            "jacoco/test.exec",
+            "jacoco/integrationTest.exec"
+    ))
+
+    sourceDirectories.setFrom(files(sourceSets.main.allSource.srcDirs))
+    classDirectories.setFrom(files(sourceSets.main.output))
+
+    reports {
+        html.required.set(true)
+        xml.required.set(true)
+        csv.required.set(false)
+    }
+}
+
+jacocoTestCoverageVerification {
+
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.70
+            }
+        }
+    }
+}
