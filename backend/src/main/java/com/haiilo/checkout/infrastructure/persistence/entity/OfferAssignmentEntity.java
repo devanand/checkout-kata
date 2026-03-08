@@ -9,9 +9,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
 @Table(name = "offer_assignments")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OfferAssignmentEntity {
 
     @Id
@@ -29,8 +34,6 @@ public class OfferAssignmentEntity {
     @Column(name = "priority", nullable = false)
     private Integer priority;
 
-    protected OfferAssignmentEntity() {
-    }
 
     public OfferAssignmentEntity(ProductEntity product, OfferEntity offer, Integer priority) {
         this.product = product;
@@ -38,19 +41,4 @@ public class OfferAssignmentEntity {
         this.priority = priority;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public ProductEntity getProduct() {
-        return product;
-    }
-
-    public OfferEntity getOffer() {
-        return offer;
-    }
-
-    public Integer getPriority() {
-        return priority;
-    }
 }

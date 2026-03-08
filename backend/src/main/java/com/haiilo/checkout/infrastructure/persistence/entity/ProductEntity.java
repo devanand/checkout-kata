@@ -4,11 +4,16 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+@Getter
 @Entity
 @Table(name = "products")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductEntity {
 
     @Id
@@ -24,9 +29,6 @@ public class ProductEntity {
     @Column(name = "currency", nullable = false)
     private String currency;
 
-    protected ProductEntity() {
-    }
-
     public ProductEntity(String id, String name, BigDecimal priceAmount, String currency) {
         this.id = id;
         this.name = name;
@@ -34,19 +36,4 @@ public class ProductEntity {
         this.currency = currency;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public BigDecimal getPriceAmount() {
-        return priceAmount;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
 }
