@@ -1,13 +1,12 @@
 package com.haiilo.checkout.pricing;
 
+import com.haiilo.checkout.application.AppliedOfferSummary;
 import com.haiilo.checkout.domain.Money;
-import com.haiilo.checkout.domain.ProductId;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PercentDiscountOfferTest {
 
@@ -19,6 +18,8 @@ class PercentDiscountOfferTest {
     @Test
     void appliesPercentageDiscountCorrectly() {
         PercentDiscountOffer offer = new PercentDiscountOffer(
+                OfferType.PERCENT_DISCOUNT,
+                "10% discount on bananas",
                 validityPeriod,
                 10
         );
@@ -31,6 +32,8 @@ class PercentDiscountOfferTest {
     @Test
     void appliesDiscountToZeroQuantity() {
         PercentDiscountOffer offer = new PercentDiscountOffer(
+                OfferType.PERCENT_DISCOUNT,
+                "10% discount on bananas",
                 validityPeriod,
                 10
         );
@@ -44,6 +47,8 @@ class PercentDiscountOfferTest {
     void rejectsPercentageZero() {
         assertThrows(IllegalArgumentException.class, () ->
                 new PercentDiscountOffer(
+                        OfferType.PERCENT_DISCOUNT,
+                        "10% discount on bananas",
                         validityPeriod,
                         0
                 )
@@ -54,6 +59,8 @@ class PercentDiscountOfferTest {
     void rejectsNegativePercentage() {
         assertThrows(IllegalArgumentException.class, () ->
                 new PercentDiscountOffer(
+                        OfferType.PERCENT_DISCOUNT,
+                        "10% discount on bananas",
                         validityPeriod,
                         -1
                 )
@@ -64,6 +71,8 @@ class PercentDiscountOfferTest {
     void rejectsPercentageHundred() {
         assertThrows(IllegalArgumentException.class, () ->
                 new PercentDiscountOffer(
+                        OfferType.PERCENT_DISCOUNT,
+                        "10% discount on bananas",
                         validityPeriod,
                         100
                 )
@@ -74,6 +83,8 @@ class PercentDiscountOfferTest {
     void rejectsPercentageAboveHundred() {
         assertThrows(IllegalArgumentException.class, () ->
                 new PercentDiscountOffer(
+                        OfferType.PERCENT_DISCOUNT,
+                        "10% discount on bananas",
                         validityPeriod,
                         101
                 )
@@ -83,6 +94,8 @@ class PercentDiscountOfferTest {
     @Test
     void rejectsNegativeQuantity() {
         PercentDiscountOffer offer = new PercentDiscountOffer(
+                OfferType.PERCENT_DISCOUNT,
+                "10% discount on bananas",
                 validityPeriod,
                 10
         );
@@ -94,11 +107,28 @@ class PercentDiscountOfferTest {
     @Test
     void rejectsNullUnitPrice() {
         PercentDiscountOffer offer = new PercentDiscountOffer(
+                OfferType.PERCENT_DISCOUNT,
+                "10% discount on bananas",
                 validityPeriod,
                 10
         );
 
         assertThrows(NullPointerException.class,
                 () -> offer.priceFor(1, null));
+    }
+
+    @Test
+    void returnsAppliedOfferSummaryFromOfferMetadata() {
+        PercentDiscountOffer offer = new PercentDiscountOffer(
+                OfferType.PERCENT_DISCOUNT,
+                "10% discount on bananas",
+                validityPeriod,
+                10
+        );
+
+        AppliedOfferSummary summary = offer.toAppliedOfferSummary();
+
+        assertEquals("PERCENT_DISCOUNT", summary.type());
+        assertEquals("10% discount on bananas", summary.description());
     }
 }

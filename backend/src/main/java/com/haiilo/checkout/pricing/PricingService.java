@@ -1,6 +1,5 @@
 package com.haiilo.checkout.pricing;
 
-import com.haiilo.checkout.application.AppliedOfferSummary;
 import com.haiilo.checkout.application.OfferCatalog;
 import com.haiilo.checkout.domain.CartItem;
 import com.haiilo.checkout.domain.Product;
@@ -11,13 +10,11 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- * Service responsible for calculating the price of cart items.
- *
- * Applies active offers when available and falls back to
- * regular pricing otherwise.
+ * Calculates cart item prices, applying active offers when available.
  */
 @Service
 public class PricingService {
+
     private final OfferCatalog offerCatalog;
     private final Clock clock;
 
@@ -35,23 +32,11 @@ public class PricingService {
         return offerCatalog.findActiveOffer(item.productId(), today)
                 .map(offer -> new PricingResult(
                         offer.priceFor(item.quantity(), product.unitPrice()),
-                        toAppliedOfferSummary(offer)
+                        offer.toAppliedOfferSummary()
                 ))
                 .orElseGet(() -> new PricingResult(
                         product.unitPrice().times(item.quantity()),
                         null
                 ));
-    }
-
-    private AppliedOfferSummary toAppliedOfferSummary(Offer offer) {
-        if (offer instanceof MultiBuyOffer) {
-            return new AppliedOfferSummary("MULTI_BUY", "Multi-buy offer applied");
-        }
-
-        if (offer instanceof PercentDiscountOffer) {
-            return new AppliedOfferSummary("PERCENT_DISCOUNT", "Percentage discount applied");
-        }
-
-        return new AppliedOfferSummary("UNKNOWN", "Offer applied");
     }
 }

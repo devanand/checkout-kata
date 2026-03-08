@@ -1,30 +1,37 @@
 package com.haiilo.checkout.pricing;
 
 import com.haiilo.checkout.domain.Money;
-import com.haiilo.checkout.domain.ProductId;
 
 import java.util.Objects;
 
 /**
  * Offer that applies a bundled price when a required quantity
  * of a product is purchased.
- *
- * Example:
- * 2 apples for 0.45 instead of paying individual unit prices.
  */
-public class MultiBuyOffer extends AbstractOffer {
+public final class MultiBuyOffer extends AbstractOffer {
+
     private final int requiredQuantity;
     private final Money bundlePrice;
 
-    public MultiBuyOffer(ValidityPeriod validityPeriod, int requiredQuantity, Money bundlePrice) {
-        super(validityPeriod);
+    public MultiBuyOffer(
+            OfferType type,
+            String description,
+            ValidityPeriod validityPeriod,
+            int requiredQuantity,
+            Money bundlePrice
+    ) {
+        super(type, description, validityPeriod);
+
         if (requiredQuantity <= 1) {
             throw new IllegalArgumentException("required quantity must be greater than 1");
         }
-        this.bundlePrice = bundlePrice;
+
+        this.bundlePrice = Objects.requireNonNull(bundlePrice, "bundlePrice must not be null");
+
         if (!bundlePrice.isPositive()) {
-            throw new IllegalArgumentException("bundleprice must be greater than zero");
+            throw new IllegalArgumentException("bundlePrice must be greater than zero");
         }
+
         this.requiredQuantity = requiredQuantity;
     }
 

@@ -8,6 +8,7 @@ import java.util.List;
 
 @Schema(description = "Checkout request containing cart items")
 public record CheckoutRequest(
+    @Schema(description = "Items to be priced")
     @NotNull(message = "items must not be null")
     List<@Valid CheckoutItemRequest> items
 ) {

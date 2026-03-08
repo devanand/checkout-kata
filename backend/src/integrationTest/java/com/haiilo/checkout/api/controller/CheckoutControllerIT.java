@@ -41,7 +41,7 @@ class CheckoutControllerIT {
     }
 
     @Test
-    void appliesOfferAutomaticallyDuringCheckout() throws Exception {
+    void appliesMultiBuyOfferDuringCheckout() throws Exception {
         CheckoutRequest request = new CheckoutRequest(
                 List.of(new CheckoutItemRequest("APPLE", 3))
         );
@@ -55,7 +55,7 @@ class CheckoutControllerIT {
                 .andExpect(jsonPath("$.items[0].unitPrice").value("0.30"))
                 .andExpect(jsonPath("$.items[0].lineTotal").value("0.75"))
                 .andExpect(jsonPath("$.items[0].appliedOffer.type").value("MULTI_BUY"))
-                .andExpect(jsonPath("$.items[0].appliedOffer.description").value("Multi-buy offer applied"))
+                .andExpect(jsonPath("$.items[0].appliedOffer.description").value("Buy 2 apples for €0.45"))
                 .andExpect(jsonPath("$.total").value("0.75"))
                 .andExpect(jsonPath("$.currency").value("EUR"));
     }
@@ -75,7 +75,7 @@ class CheckoutControllerIT {
                 .andExpect(jsonPath("$.items[0].unitPrice").value("0.20"))
                 .andExpect(jsonPath("$.items[0].lineTotal").value("0.54"))
                 .andExpect(jsonPath("$.items[0].appliedOffer.type").value("PERCENT_DISCOUNT"))
-                .andExpect(jsonPath("$.items[0].appliedOffer.description").value("Percentage discount applied"))
+                .andExpect(jsonPath("$.items[0].appliedOffer.description").value("10% discount on bananas"))
                 .andExpect(jsonPath("$.total").value("0.54"))
                 .andExpect(jsonPath("$.currency").value("EUR"));
     }

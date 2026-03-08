@@ -9,12 +9,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "offers")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OfferEntity {
 
     @Id
@@ -24,6 +29,9 @@ public class OfferEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     private OfferType type;
+
+    @Column(name = "description", nullable = false)
+    private String description;
 
     @Column(name = "valid_from", nullable = false)
     private LocalDate validFrom;
@@ -40,11 +48,10 @@ public class OfferEntity {
     @Column(name = "percentage")
     private Integer percentage;
 
-    protected OfferEntity() {
-    }
 
     public OfferEntity(
             OfferType type,
+            String description,
             LocalDate validFrom,
             LocalDate validUntil,
             Integer requiredQuantity,
@@ -52,38 +59,11 @@ public class OfferEntity {
             Integer percentage
     ) {
         this.type = type;
+        this.description = description;
         this.validFrom = validFrom;
         this.validUntil = validUntil;
         this.requiredQuantity = requiredQuantity;
         this.bundlePrice = bundlePrice;
         this.percentage = percentage;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public OfferType getType() {
-        return type;
-    }
-
-    public LocalDate getValidFrom() {
-        return validFrom;
-    }
-
-    public LocalDate getValidUntil() {
-        return validUntil;
-    }
-
-    public Integer getRequiredQuantity() {
-        return requiredQuantity;
-    }
-
-    public BigDecimal getBundlePrice() {
-        return bundlePrice;
-    }
-
-    public Integer getPercentage() {
-        return percentage;
     }
 }

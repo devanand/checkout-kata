@@ -2,17 +2,16 @@ package com.haiilo.checkout.application;
 
 import com.haiilo.checkout.domain.Cart;
 import com.haiilo.checkout.domain.Money;
+import com.haiilo.checkout.domain.Product;
 import com.haiilo.checkout.domain.ProductId;
 import com.haiilo.checkout.exception.UnknownProductException;
 import com.haiilo.checkout.pricing.PricingService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class CheckoutServiceTest {
 
@@ -31,13 +30,13 @@ class CheckoutServiceTest {
     }
 
     @Test
-    void calculatesTotalForSingleItem() {
+    void calculatesTotalForSingleItemWithoutOffer() {
         Cart cart = new Cart();
         cart.add(ProductId.of("APPLE"), 1);
 
         Mockito.when(catalog.findById(ProductId.of("APPLE")))
-                .thenReturn(java.util.Optional.of(
-                        new com.haiilo.checkout.domain.Product(
+                .thenReturn(Optional.of(
+                        new Product(
                                 ProductId.of("APPLE"),
                                 Money.eur("0.30")
                         )
@@ -48,7 +47,7 @@ class CheckoutServiceTest {
         assertEquals(Money.eur("0.30"), result.total());
         assertEquals(1, result.items().size());
 
-        CheckoutLine line = result.items().getFirst();
+        CheckoutLine line = result.items().get(0);
         assertEquals(ProductId.of("APPLE"), line.productId());
         assertEquals(1, line.quantity());
         assertEquals(Money.eur("0.30"), line.unitPrice());
@@ -62,7 +61,7 @@ class CheckoutServiceTest {
         cart.add(ProductId.of("MANGO"), 1);
 
         Mockito.when(catalog.findById(ProductId.of("MANGO")))
-                .thenReturn(java.util.Optional.empty());
+                .thenReturn(Optional.empty());
 
         assertThrows(UnknownProductException.class, () -> checkoutService.checkout(cart));
     }

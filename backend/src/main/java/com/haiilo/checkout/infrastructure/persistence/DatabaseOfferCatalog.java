@@ -52,6 +52,8 @@ public class DatabaseOfferCatalog implements OfferCatalog {
 
         if (entity.getType() == OfferType.MULTI_BUY) {
             return new MultiBuyOffer(
+                    entity.getType(),
+                    entity.getDescription(),
                     validityPeriod,
                     entity.getRequiredQuantity(),
                     Money.of(entity.getBundlePrice(), Currency.getInstance("EUR"))
@@ -60,6 +62,8 @@ public class DatabaseOfferCatalog implements OfferCatalog {
 
         if (entity.getType() == OfferType.PERCENT_DISCOUNT) {
             return new PercentDiscountOffer(
+                    entity.getType(),
+                    entity.getDescription(),
                     validityPeriod,
                     entity.getPercentage()
             );

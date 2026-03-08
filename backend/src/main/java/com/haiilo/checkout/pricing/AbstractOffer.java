@@ -1,24 +1,37 @@
 package com.haiilo.checkout.pricing;
 
-import com.haiilo.checkout.domain.ProductId;
+import com.haiilo.checkout.application.AppliedOfferSummary;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
- * Base implementation of the Offer interface providing common behavior.
- *
- * Handles shared attributes such as the associated product and
- * the validity period of the offer.
+ * Base implementation of the Offer interface providing common metadata.
  */
 public abstract class AbstractOffer implements Offer {
+
+    private final OfferType type;
+    private final String description;
     private final ValidityPeriod validityPeriod;
 
-    protected AbstractOffer(ValidityPeriod validityPeriod) {
-        this.validityPeriod = validityPeriod;
+    protected AbstractOffer(OfferType type, String description, ValidityPeriod validityPeriod) {
+        this.type = Objects.requireNonNull(type, "type must not be null");
+        this.description = Objects.requireNonNull(description, "description must not be null");
+        this.validityPeriod = Objects.requireNonNull(validityPeriod, "validityPeriod must not be null");
+    }
+
+    @Override
+    public OfferType type() {
+        return type;
     }
 
     @Override
     public boolean isActive(LocalDate date) {
         return validityPeriod.isActive(date);
+    }
+
+    @Override
+    public AppliedOfferSummary toAppliedOfferSummary() {
+        return new AppliedOfferSummary(type.name(), description);
     }
 }

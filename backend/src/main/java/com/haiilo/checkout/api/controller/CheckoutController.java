@@ -51,24 +51,35 @@ public class CheckoutController {
                     content = @Content(
                             schema = @Schema(implementation = CheckoutResponse.class),
                             examples = @ExampleObject(
+                                    name = "Checkout Success",
                                     value = """
+                                        {
+                                          "items": [
                                             {
-                                              "items": [
-                                                {
-                                                  "productId": "APPLE",
-                                                  "quantity": 3,
-                                                  "unitPrice": "0.30",
-                                                  "lineTotal": "0.75",
-                                                  "appliedOffer": {
-                                                    "type": "MULTI_BUY",
-                                                    "description": "Multi-buy offer applied"
-                                                  }
-                                                }
-                                              ],
-                                              "total": "0.75",
-                                              "currency": "EUR"
+                                              "productId": "APPLE",
+                                              "quantity": 3,
+                                              "unitPrice": "0.30",
+                                              "lineTotal": "0.75",
+                                              "appliedOffer": {
+                                                "type": "MULTI_BUY",
+                                                "description": "Buy 2 apples for 0.45"
+                                              }
+                                            },
+                                            {
+                                              "productId": "BANANA",
+                                              "quantity": 3,
+                                              "unitPrice": "0.20",
+                                              "lineTotal": "0.54",
+                                              "appliedOffer": {
+                                                "type": "PERCENT_DISCOUNT",
+                                                "description": "10% discount on bananas"
+                                              }
                                             }
-                                            """
+                                          ],
+                                          "total": "1.29",
+                                          "currency": "EUR"
+                                        }
+                                        """
                             )
                     )
             ),
@@ -77,12 +88,13 @@ public class CheckoutController {
                     description = "Invalid request or unknown product",
                     content = @Content(
                             examples = @ExampleObject(
+                                    name = "Unknown Product",
                                     value = """
-                                            {
-                                              "error": "UNKNOWN_PRODUCT",
-                                              "message": "Unknown product: MANGO"
-                                            }
-                                            """
+                                        {
+                                          "error": "UNKNOWN_PRODUCT",
+                                          "message": "Unknown product: MANGO"
+                                        }
+                                        """
                             )
                     )
             )
@@ -96,15 +108,19 @@ public class CheckoutController {
                             examples = @ExampleObject(
                                     name = "Sample Cart",
                                     value = """
-                                            {
-                                              "items": [
-                                                {
-                                                  "productId": "APPLE",
-                                                  "quantity": 3
-                                                }
-                                              ]
-                                            }
-                                            """
+                                {
+                                  "items": [
+                                    {
+                                      "productId": "APPLE",
+                                      "quantity": 3
+                                    },
+                                    {
+                                      "productId": "BANANA",
+                                      "quantity": 3
+                                    }
+                                  ]
+                                }
+                                """
                             )
                     )
             )

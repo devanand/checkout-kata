@@ -4,10 +4,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
-@Schema(description = "Item to checkout")
+@Schema(description = "Cart item to be priced")
 public record CheckoutItemRequest(
-    @NotBlank(message = "productId must not be blank")
+    @Schema(description = "Product identifier", example = "APPLE")
     String productId,
+    @Schema(description = "Quantity requested", example = "3")
     @Positive
     int quantity
 ) {

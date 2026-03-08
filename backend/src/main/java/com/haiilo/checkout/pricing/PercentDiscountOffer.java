@@ -1,23 +1,23 @@
 package com.haiilo.checkout.pricing;
 
 import com.haiilo.checkout.domain.Money;
-import com.haiilo.checkout.domain.ProductId;
 
 import java.util.Objects;
 
 /**
- * Offer that applies a percentage discount to the total price
- * of a product based on quantity purchased.
+ * Offer that applies a percentage discount to a product.
  */
 public final class PercentDiscountOffer extends AbstractOffer {
 
     private final int percentage;
 
     public PercentDiscountOffer(
+            OfferType type,
+            String description,
             ValidityPeriod validityPeriod,
             int percentage
     ) {
-        super(validityPeriod);
+        super(type, description, validityPeriod);
 
         if (percentage <= 0 || percentage >= 100) {
             throw new IllegalArgumentException("percentage must be between 1 and 99");
