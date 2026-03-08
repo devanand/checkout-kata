@@ -1,21 +1,44 @@
 # Checkout Kata
 
-This repository contains a simplified supermarket checkout system built with Java and Spring Boot.
+This repository contains a simplified supermarket checkout system implemented as part of a technical exercise.
 
-The backend service calculates cart totals while automatically applying promotional offers.
+The goal of the project is to build a maintainable backend service capable of applying promotional offers during checkout.
 
-## Project Structure
+The implementation is located in the **backend** module.
 
-### checkout-kata
-- backend → Spring Boot checkout service
-- docs → architecture diagrams
-
-## Backend Service
-
-The backend implementation, API documentation, testing setup, and architecture details are available here:
+For detailed documentation about the service, API usage, testing, and architecture decisions see:
 
 [backend/README.md](backend/README.md)
 
-## Architecture
 
-[Architecture Diagram](docs/checkout-architecture.pdf)
+
+# Architecture Overview
+
+The system design is illustrated through the following diagrams.
+
+
+## 1. Database Schema (ER Diagram)
+
+The persistence model stores products, promotional offers, and their relationships.
+
+![ER Diagram](docs/er-diagram.png)
+
+📄 Full resolution: [er-diagram.pdf](docs/er-diagram.pdf)
+
+
+## 2. Checkout Application Flow
+
+This diagram illustrates how a checkout request flows through the system and how services collaborate to compute the final price.
+
+![Checkout Flow](docs/checkout-flow.png)
+
+📄 Full resolution: [checkout-flow.pdf](docs/checkout-flow.pdf)
+
+
+## 3. Pricing and Offer Model
+
+This diagram shows how pricing rules and promotional offers are represented in the domain layer.
+
+![Pricing Flow](docs/pricing-flow.png)
+
+📄 Full resolution: [pricing-flow.pdf](docs/pricing-flow.pdf)
