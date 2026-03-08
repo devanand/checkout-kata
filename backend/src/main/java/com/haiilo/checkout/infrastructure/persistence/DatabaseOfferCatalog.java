@@ -5,6 +5,7 @@ import com.haiilo.checkout.domain.Money;
 import com.haiilo.checkout.domain.ProductId;
 import com.haiilo.checkout.infrastructure.persistence.entity.OfferAssignmentEntity;
 import com.haiilo.checkout.infrastructure.persistence.entity.OfferEntity;
+import com.haiilo.checkout.infrastructure.persistence.mapper.OfferEntityMapperRegistry;
 import com.haiilo.checkout.infrastructure.persistence.repository.OfferAssignmentJpaRepository;
 import com.haiilo.checkout.pricing.MultiBuyOffer;
 import com.haiilo.checkout.pricing.Offer;
@@ -24,11 +25,16 @@ import java.util.Optional;
 public class DatabaseOfferCatalog implements OfferCatalog {
 
     private final OfferAssignmentJpaRepository offerAssignmentJpaRepository;
+    private final OfferEntityMapperRegistry offerEntityMapperRegistry;
 
-    public DatabaseOfferCatalog(OfferAssignmentJpaRepository offerAssignmentJpaRepository) {
+    public DatabaseOfferCatalog(OfferAssignmentJpaRepository offerAssignmentJpaRepository, OfferEntityMapperRegistry offerEntityMapperRegistry) {
         this.offerAssignmentJpaRepository = Objects.requireNonNull(
                 offerAssignmentJpaRepository,
                 "offerAssignmentJpaRepository must not be null"
+        );
+        this.offerEntityMapperRegistry = Objects.requireNonNull(
+                offerEntityMapperRegistry,
+                "offerEntityMapperRegistry must not be null"
         );
     }
 
@@ -39,36 +45,10 @@ public class DatabaseOfferCatalog implements OfferCatalog {
 
         return offerAssignmentJpaRepository.findByProduct_IdOrderByPriorityAsc(productId.value()).stream()
                 .map(OfferAssignmentEntity::getOffer)
-                .map(this::toDomain)
+                .map(offerEntityMapperRegistry::toDomain)
                 .filter(offer -> offer.isActive(date))
                 .findFirst();
     }
 
-    private Offer toDomain(OfferEntity entity) {
-        ValidityPeriod validityPeriod = new ValidityPeriod(
-                entity.getValidFrom(),
-                entity.getValidUntil()
-        );
-
-        if (entity.getType() == OfferType.MULTI_BUY) {
-            return new MultiBuyOffer(
-                    entity.getType(),
-                    entity.getDescription(),
-                    validityPeriod,
-                    entity.getRequiredQuantity(),
-                    Money.of(entity.getBundlePrice(), Currency.getInstance("EUR"))
-            );
-        }
-
-        if (entity.getType() == OfferType.PERCENT_DISCOUNT) {
-            return new PercentDiscountOffer(
-                    entity.getType(),
-                    entity.getDescription(),
-                    validityPeriod,
-                    entity.getPercentage()
-            );
-        }
-
-        throw new IllegalArgumentException("Unsupported offer type: " + entity.getType());
-    }
+    
 }
