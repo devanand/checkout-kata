@@ -49,6 +49,10 @@ public final class Money {
         return new Money(BigDecimal.ZERO, Currency.getInstance("EUR"));
     }
 
+    public static Money of(BigDecimal priceAmount, Currency instance) {
+        return Money.eur(priceAmount);
+    }
+
     public Money plus(Money other) {
         Objects.requireNonNull(other, "other must not be null");
         validateCurrency(other);

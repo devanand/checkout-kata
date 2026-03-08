@@ -12,7 +12,6 @@ import java.time.LocalDate;
  * Implementations define how pricing adjustments are calculated.
  */
 public interface Offer {
-    ProductId getProductId();
     boolean isActive(LocalDate date);
     Money priceFor(int quantity, Money unitPrice);
 }

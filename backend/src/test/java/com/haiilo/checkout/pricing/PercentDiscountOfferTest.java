@@ -19,7 +19,6 @@ class PercentDiscountOfferTest {
     @Test
     void appliesPercentageDiscountCorrectly() {
         PercentDiscountOffer offer = new PercentDiscountOffer(
-                ProductId.of("BANANA"),
                 validityPeriod,
                 10
         );
@@ -32,7 +31,6 @@ class PercentDiscountOfferTest {
     @Test
     void appliesDiscountToZeroQuantity() {
         PercentDiscountOffer offer = new PercentDiscountOffer(
-                ProductId.of("BANANA"),
                 validityPeriod,
                 10
         );
@@ -46,7 +44,6 @@ class PercentDiscountOfferTest {
     void rejectsPercentageZero() {
         assertThrows(IllegalArgumentException.class, () ->
                 new PercentDiscountOffer(
-                        ProductId.of("BANANA"),
                         validityPeriod,
                         0
                 )
@@ -57,7 +54,6 @@ class PercentDiscountOfferTest {
     void rejectsNegativePercentage() {
         assertThrows(IllegalArgumentException.class, () ->
                 new PercentDiscountOffer(
-                        ProductId.of("BANANA"),
                         validityPeriod,
                         -1
                 )
@@ -68,7 +64,6 @@ class PercentDiscountOfferTest {
     void rejectsPercentageHundred() {
         assertThrows(IllegalArgumentException.class, () ->
                 new PercentDiscountOffer(
-                        ProductId.of("BANANA"),
                         validityPeriod,
                         100
                 )
@@ -79,7 +74,6 @@ class PercentDiscountOfferTest {
     void rejectsPercentageAboveHundred() {
         assertThrows(IllegalArgumentException.class, () ->
                 new PercentDiscountOffer(
-                        ProductId.of("BANANA"),
                         validityPeriod,
                         101
                 )
@@ -89,7 +83,6 @@ class PercentDiscountOfferTest {
     @Test
     void rejectsNegativeQuantity() {
         PercentDiscountOffer offer = new PercentDiscountOffer(
-                ProductId.of("BANANA"),
                 validityPeriod,
                 10
         );
@@ -101,7 +94,6 @@ class PercentDiscountOfferTest {
     @Test
     void rejectsNullUnitPrice() {
         PercentDiscountOffer offer = new PercentDiscountOffer(
-                ProductId.of("BANANA"),
                 validityPeriod,
                 10
         );

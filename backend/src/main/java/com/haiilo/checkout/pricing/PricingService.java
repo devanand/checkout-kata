@@ -1,8 +1,8 @@
 package com.haiilo.checkout.pricing;
 
+import com.haiilo.checkout.application.AppliedOfferSummary;
 import com.haiilo.checkout.application.OfferCatalog;
 import com.haiilo.checkout.domain.CartItem;
-import com.haiilo.checkout.domain.Money;
 import com.haiilo.checkout.domain.Product;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +26,32 @@ public class PricingService {
         this.clock = Clock.systemDefaultZone();
     }
 
-    public Money price(CartItem item, Product product) {
+    public PricingResult price(CartItem item, Product product) {
         Objects.requireNonNull(item, "item must not be null");
         Objects.requireNonNull(product, "product must not be null");
 
         LocalDate today = LocalDate.now(clock);
 
         return offerCatalog.findActiveOffer(item.productId(), today)
-                .map(offer -> offer.priceFor(item.quantity(), product.unitPrice()))
-                .orElseGet(() -> product.unitPrice().times(item.quantity()));
+                .map(offer -> new PricingResult(
+                        offer.priceFor(item.quantity(), product.unitPrice()),
+                        toAppliedOfferSummary(offer)
+                ))
+                .orElseGet(() -> new PricingResult(
+                        product.unitPrice().times(item.quantity()),
+                        null
+                ));
+    }
+
+    private AppliedOfferSummary toAppliedOfferSummary(Offer offer) {
+        if (offer instanceof MultiBuyOffer) {
+            return new AppliedOfferSummary("MULTI_BUY", "Multi-buy offer applied");
+        }
+
+        if (offer instanceof PercentDiscountOffer) {
+            return new AppliedOfferSummary("PERCENT_DISCOUNT", "Percentage discount applied");
+        }
+
+        return new AppliedOfferSummary("UNKNOWN", "Offer applied");
     }
 }

@@ -16,8 +16,8 @@ public class MultiBuyOffer extends AbstractOffer {
     private final int requiredQuantity;
     private final Money bundlePrice;
 
-    public MultiBuyOffer(ProductId productId, ValidityPeriod validityPeriod, int requiredQuantity, Money bundlePrice) {
-        super(productId, validityPeriod);
+    public MultiBuyOffer(ValidityPeriod validityPeriod, int requiredQuantity, Money bundlePrice) {
+        super(validityPeriod);
         if (requiredQuantity <= 1) {
             throw new IllegalArgumentException("required quantity must be greater than 1");
         }

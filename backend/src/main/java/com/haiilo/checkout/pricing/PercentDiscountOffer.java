@@ -14,11 +14,10 @@ public final class PercentDiscountOffer extends AbstractOffer {
     private final int percentage;
 
     public PercentDiscountOffer(
-            ProductId productId,
             ValidityPeriod validityPeriod,
             int percentage
     ) {
-        super(productId, validityPeriod);
+        super(validityPeriod);
 
         if (percentage <= 0 || percentage >= 100) {
             throw new IllegalArgumentException("percentage must be between 1 and 99");

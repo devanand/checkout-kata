@@ -11,17 +11,10 @@ import java.time.LocalDate;
  * the validity period of the offer.
  */
 public abstract class AbstractOffer implements Offer {
-    private final ProductId productId;
     private final ValidityPeriod validityPeriod;
 
-    protected AbstractOffer(ProductId productId, ValidityPeriod validityPeriod) {
-        this.productId = productId;
+    protected AbstractOffer(ValidityPeriod validityPeriod) {
         this.validityPeriod = validityPeriod;
-    }
-
-    @Override
-    public ProductId getProductId() {
-        return productId;
     }
 
     @Override

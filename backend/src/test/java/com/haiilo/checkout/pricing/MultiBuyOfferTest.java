@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class MultiBuyOfferTest {
 
     private final MultiBuyOffer offer = new MultiBuyOffer(
-            ProductId.of("APPLE"),
             new ValidityPeriod(LocalDate.of(2026, 3, 1), LocalDate.of(2026, 3, 31)),
             2,
             Money.eur("0.45")

@@ -13,7 +13,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -23,15 +24,18 @@ class CheckoutControllerIT {
     private MockMvc mockMvc;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Test
-    void returnsZeroForEmptyCart() throws Exception {
+    void returnsEmptyItemsAndZeroTotalForEmptyCart() throws Exception {
         CheckoutRequest request = new CheckoutRequest(List.of());
+
         mockMvc.perform(post("/api/v1/checkout")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items").isArray())
+                .andExpect(jsonPath("$.items").isEmpty())
                 .andExpect(jsonPath("$.total").value("0.00"))
                 .andExpect(jsonPath("$.currency").value("EUR"));
     }
@@ -46,14 +50,40 @@ class CheckoutControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items[0].productId").value("APPLE"))
+                .andExpect(jsonPath("$.items[0].quantity").value(3))
+                .andExpect(jsonPath("$.items[0].unitPrice").value("0.30"))
+                .andExpect(jsonPath("$.items[0].lineTotal").value("0.75"))
+                .andExpect(jsonPath("$.items[0].appliedOffer.type").value("MULTI_BUY"))
+                .andExpect(jsonPath("$.items[0].appliedOffer.description").value("Multi-buy offer applied"))
                 .andExpect(jsonPath("$.total").value("0.75"))
+                .andExpect(jsonPath("$.currency").value("EUR"));
+    }
+
+    @Test
+    void appliesPercentDiscountOfferDuringCheckout() throws Exception {
+        CheckoutRequest request = new CheckoutRequest(
+                List.of(new CheckoutItemRequest("BANANA", 3))
+        );
+
+        mockMvc.perform(post("/api/v1/checkout")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items[0].productId").value("BANANA"))
+                .andExpect(jsonPath("$.items[0].quantity").value(3))
+                .andExpect(jsonPath("$.items[0].unitPrice").value("0.20"))
+                .andExpect(jsonPath("$.items[0].lineTotal").value("0.54"))
+                .andExpect(jsonPath("$.items[0].appliedOffer.type").value("PERCENT_DISCOUNT"))
+                .andExpect(jsonPath("$.items[0].appliedOffer.description").value("Percentage discount applied"))
+                .andExpect(jsonPath("$.total").value("0.54"))
                 .andExpect(jsonPath("$.currency").value("EUR"));
     }
 
     @Test
     void returnsBadRequestForUnknownProduct() throws Exception {
         CheckoutRequest request = new CheckoutRequest(
-            List.of(new CheckoutItemRequest("MANGO", 1))
+                List.of(new CheckoutItemRequest("MANGO", 1))
         );
 
         mockMvc.perform(post("/api/v1/checkout")
