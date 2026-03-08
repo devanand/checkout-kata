@@ -7,10 +7,7 @@ import com.haiilo.checkout.domain.Product;
 import com.haiilo.checkout.domain.ProductId;
 import org.junit.jupiter.api.Test;
 
-import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;

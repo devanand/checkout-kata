@@ -1,22 +1,15 @@
 package com.haiilo.checkout.infrastructure.persistence;
 
 import com.haiilo.checkout.application.OfferCatalog;
-import com.haiilo.checkout.domain.Money;
 import com.haiilo.checkout.domain.ProductId;
 import com.haiilo.checkout.infrastructure.persistence.entity.OfferAssignmentEntity;
-import com.haiilo.checkout.infrastructure.persistence.entity.OfferEntity;
 import com.haiilo.checkout.infrastructure.persistence.mapper.OfferEntityMapperRegistry;
 import com.haiilo.checkout.infrastructure.persistence.repository.OfferAssignmentJpaRepository;
-import com.haiilo.checkout.pricing.MultiBuyOffer;
 import com.haiilo.checkout.pricing.Offer;
-import com.haiilo.checkout.pricing.OfferType;
-import com.haiilo.checkout.pricing.PercentDiscountOffer;
-import com.haiilo.checkout.pricing.ValidityPeriod;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Currency;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -50,5 +43,5 @@ public class DatabaseOfferCatalog implements OfferCatalog {
                 .findFirst();
     }
 
-    
+
 }
